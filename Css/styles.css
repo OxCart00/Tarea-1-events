@@ -1,0 +1,46 @@
+
+.tabs {
+  list-style-type: none;
+  margin: -9px -10px 0px -8px;
+  padding: 80px 0px 10px 0px;
+  display: flex; 
+  justify-content: center; 
+  background-color: #000000; 
+  gap: 6%;
+}
+
+.tabs li {
+  font-size: 23px;
+  font-weight: 900;
+  margin-right: 10px;
+}
+
+.tabs li a {
+  display: block;
+  padding: 10px;
+  color: #000000;
+  text-decoration: none;
+  border-bottom: 2px solid transparent; 
+}
+
+
+
+.tabs li button {
+  display: block;
+  padding: 10px;
+  color: #ffffff;
+  border:none;/* Quitar el borde */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tabs li button:hover {
+  background-color: #ffffff;
+}
+
+.tabs li button.active {
+  background-color: #ffffff;
+  color: #fff;
+}
+
+
