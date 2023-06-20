@@ -25,8 +25,6 @@ export function buildGrid(data) {
     price.textContent = priceSet(item.price);
     price.className = 'price';
 
-    const description = document.createElement('p');
-    description.textContent = item.description;
     card.appendChild(img);
     card.appendChild(title);
     card.appendChild(date);

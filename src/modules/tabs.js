@@ -1,3 +1,5 @@
+let activeButton = null;
+
 export function createTabs(list) {
   let ulElement = document.createElement('ul');
 
@@ -18,8 +20,6 @@ export function createTabs(list) {
   let tabsContainer = document.getElementById('tabsContainer');
   tabsContainer.appendChild(ulElement);
 }
-
-let activeButton = null;
 
 export function changeColor(buttonIndex) {
   const buttons = document.getElementsByClassName("tabButton");

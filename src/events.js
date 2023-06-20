@@ -1,5 +1,5 @@
-import { fetchData } from "../Js/fetch.js";
-import { buildGrid } from "../Js/grids.js";
+import { fetchData } from "./modules/fetch.js";
+import { buildGrid } from "./modules/grids.js";
 
 let localStorageProxy = new Proxy(localStorage, {
   set: function (target, key, value) {
@@ -18,7 +18,6 @@ export async function storageInfo(API_URL, id) {
   const cachedDataString = localStorageProxy[id];
 
   if (cachedDataString) {
-    console.log(localStorageProxy[id]);
     buildGrid(localStorageProxy[id]);
   }else{
     const data = await fetchData(API_URL);
