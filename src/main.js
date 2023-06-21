@@ -7,6 +7,11 @@ createTabs(categories);
 const tabButtons = document.querySelectorAll('.tabButton');
 let API_URL;
 
+// Init
+changeColor(0);
+API_URL = `https://knassbani2.execute-api.us-east-2.amazonaws.com/events/music`;
+await storageInfo(API_URL, "music");
+
 // Agrega un controlador de eventos al botón
 tabButtons.forEach(function (element, index) {
   element.addEventListener('click', async function () {
