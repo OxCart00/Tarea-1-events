@@ -2,11 +2,67 @@ body{
   margin: 0;
   background-color: whitesmoke;
 }
+header{
+  background-color: #000000;
+}
 h3{
   margin: 25px 15px;
 }
 p{
   margin: 10px 15px;
+}
+.accountButton__container{
+  padding: 1rem;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.account__link{
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+  display: inline-block;
+  position: relative;
+  width: 6.5rem;
+  padding: .4375rem;
+}
+.account__link svg{
+  width: 1rem;
+  padding: .4375rem;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+.backButton__container{
+  padding: 1rem;
+}
+.back__link{
+  width: 6.5rem;
+  padding: .4375rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+  display: inline-block;
+  position: relative;
+  padding-left: 1.5625rem; 
+}
+.back__link svg{
+  width: 1rem;
+  padding: .4375rem;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+.hover__effect:hover{
+  background-color: white;
+  color: black;
+}
+.account__link:hover svg{
+  stroke: black;
+}
+.back__link:hover svg{
+  stroke: black;
 }
 .tabs {
   height: 5.25rem;
