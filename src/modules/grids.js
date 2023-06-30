@@ -1,3 +1,5 @@
+import { handleInterested, handleGoing } from '../events.js';
+
 export function buildGrid(data) {
   const grid = document.getElementById('grid');
   grid.textContent = ``;
@@ -25,11 +27,21 @@ export function buildGrid(data) {
     price.textContent = priceSet(item.price);
     price.className = 'price';
 
+    const interested = document.createElement('button');
+    interested.textContent = 'Interested';
+    interested.addEventListener('click', handleInterested);
+
+    const going = document.createElement('button');
+    going.textContent = 'Going';
+    going.addEventListener('click', handleGoing);
+
     card.appendChild(img);
     card.appendChild(title);
     card.appendChild(date);
     card.appendChild(location);
     card.appendChild(price);
+    card.appendChild(interested);
+    card.appendChild(going);
     temp.appendChild(card);
   });
   grid.appendChild(temp);

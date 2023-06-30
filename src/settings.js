@@ -1,4 +1,4 @@
-let categories = [
+export let categories = [
   { name: 'Music', id: 'music' },
   { name: 'Sports', id: 'sports' },
   { name: 'Business', id: 'business' },
@@ -6,4 +6,12 @@ let categories = [
   { name: 'Art', id: 'art' }
 ];
 
-export default categories;
+
+export let yourEvents = [
+  { name: 'Favorite', id: 'Favorite' },
+  { name: 'Interested', id: 'Interested' },
+  { name: 'Going', id: 'Going' }
+];
+
+
+

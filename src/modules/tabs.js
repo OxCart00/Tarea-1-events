@@ -33,3 +33,5 @@ export function changeColor(buttonIndex) {
   activeButton = buttons[buttonIndex];
   activeButton.classList.add("active");
 }
+
+//Codigo nuevo
