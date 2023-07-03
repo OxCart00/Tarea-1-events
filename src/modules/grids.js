@@ -11,7 +11,6 @@ export function buildGrid(data) {
   const goingList = localStorageManager.getItem('Going');
   const interestedList = localStorageManager.getItem('Interested');
   const favoriteList = localStorageManager.getItem('Favorite');
-  console.log(interestedList);
   grid.textContent = ``;
   let temp = new DocumentFragment;
 
@@ -66,13 +65,13 @@ export function buildGrid(data) {
     temp.appendChild(card);
 
     if (favoriteList.some(event => event.id === item.id)) {
-      handleFavorite({target: favorite});
+      handleFavorite({ target: favorite });
     }
     if (goingList.some(event => event.id === item.id)) {
-      handleGoing({target: going});
+      handleGoing({ target: going });
     }
-      if (interestedList.some(event => event.id === item.id)){
-      handleInterested({target: interested});
+    if (interestedList.some(event => event.id === item.id)) {
+      handleInterested({ target: interested });
     }
   });
   grid.appendChild(temp);

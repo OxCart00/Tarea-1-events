@@ -110,7 +110,7 @@ export function handleGoing(event) {
     interestedBtn = document.createElement('button');
     interestedBtn.textContent = 'Interested';
     interestedBtn.classList.add('interestedBtn');
-    interestedBtn.id =   eventId;
+    interestedBtn.id = eventId;
     interestedBtn.addEventListener('click', handleInterested);
     card.appendChild(interestedBtn);
     card.appendChild(goingBtn);

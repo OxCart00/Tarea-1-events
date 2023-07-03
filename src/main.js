@@ -4,13 +4,13 @@ import { categories, yourEvents } from '../src/settings.js';
 import LocalStorageManager from './modules/singleton__pattern.js';
 
 const localStorageManager = new LocalStorageManager();
-console.log(localStorageManager.getItem('Going'));
+
 if (localStorageManager.getItem('Going') === null) {
   yourEvents.forEach(category => {
-  localStorageManager.setItem(category.id,[])
-});
+    localStorageManager.setItem(category.id, [])
+  });
 }
-
+  
 
 createTabs(categories);
 
