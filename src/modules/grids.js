@@ -39,16 +39,19 @@ export function buildGrid(data) {
 
     const interested = document.createElement('button');
     interested.textContent = 'Interested';
+    interested.classList.add('interestedBtn');
     interested.id = item.id;
     interested.addEventListener('click', handleInterested);
 
     const going = document.createElement('button');
     going.textContent = 'Going';
+    going.classList.add('goingBtn');
     going.id = item.id;
     going.addEventListener('click', handleGoing);
 
     const favorite = document.createElement('button');
     favorite.textContent = 'Favorite';
+    favorite.classList.add('favoriteBtn');
     favorite.id = item.id;
     favorite.addEventListener('click', handleFavorite);
 
@@ -63,7 +66,6 @@ export function buildGrid(data) {
     temp.appendChild(card);
 
     if (favoriteList.some(event => event.id === item.id)) {
-      console.log('repetido');
       handleFavorite({target: favorite});
     }
     if (goingList.some(event => event.id === item.id)) {

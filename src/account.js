@@ -3,9 +3,13 @@ import { yourEvents } from '../src/settings.js';
 import { buildViewGrid } from './modules/grids.js';
 import LocalStorageManager from './modules/singleton__pattern.js';
 
+
 const localStorageManager = new LocalStorageManager();
 
 createTabs(yourEvents);
+
+changeColor(0);
+buildViewGrid(localStorageManager.getItem('Favorite'));
 
 const tabButtons = document.querySelectorAll('.tabButton');
 

@@ -22,7 +22,7 @@ export async function storageInfo(API_URL, id) {
 
   if (cachedDataString) {
     buildGrid(localStorageProxy[id]);
-  }else{
+  } else {
     const data = await fetchData(API_URL);
     localStorageProxy[id] = data;
     buildGrid(localStorageProxy[id]);
@@ -36,7 +36,6 @@ export function handleInterested(event) {
   const card = interestedBtn.parentNode;
   card.classList.add('interested');
 
-  const goingBtn = interestedBtn.previousSibling;
 
   const interestedList = localStorageManager.getItem('Interested')
   const key = document.querySelector('.active').id;
@@ -46,29 +45,30 @@ export function handleInterested(event) {
 
   interestedBtn.remove();
 
+  const interestedContainer = document.createElement('div');
+  interestedContainer.classList.add('interested-notify-container');
   const message = document.createElement('p');
   message.textContent = 'You are interested in going.';
-  card.appendChild(message);
+  interestedContainer.appendChild(message)
 
   const link1 = document.createElement('a');
   link1.textContent = 'Changed your mind?';
   link1.href = '#';
-  link1.addEventListener('click', function(e) {
+  link1.addEventListener('click', function (e) {
     e.preventDefault();
-    card.removeChild(message);
-    card.removeChild(link1);
+    card.removeChild(interestedContainer);
     card.appendChild(interestedBtn);
-    card.appendChild(goingBtn);
     const temp = interestedList.filter(element => element.id !== eventId);
-    localStorageManager.setItem('Interested',temp);
+    localStorageManager.setItem('Interested', temp);
   });
-  card.appendChild(link1);
+  interestedContainer.appendChild(link1);
+  card.appendChild(interestedContainer);  
 
   // Aquí puedes agregar la lógica adicional para el evento 'Interested'
   const exist = interestedList.some(item => item.id === eventId);
   if (!exist) {
-  interestedList.push(selectedEvent);
-  localStorageManager.setItem('Interested', interestedList);
+    interestedList.push(selectedEvent);
+    localStorageManager.setItem('Interested', interestedList);
   }
   // ...
 }
@@ -76,19 +76,25 @@ export function handleInterested(event) {
 // Función para el evento 'Going'
 export function handleGoing(event) {
   const goingBtn = event.target;
-  const interestedBtn = goingBtn.previousSibling;
   const card = goingBtn.parentNode;
+  let interestedBtn = card.querySelector('.interestedBtn');
   card.classList.add('going');
 
 
-  const goingList = localStorageManager.getItem('Going')
+  const goingList = localStorageManager.getItem('Going');
+  const interestedList = localStorageManager.getItem('Interested');
   const key = document.querySelector('.active').id;
   const eventId = event.target.id;
   const events = localStorageManager.getItem(key);
   const selectedEvent = events.find(element => element.id === eventId);
 
   goingBtn.remove();
-  interestedBtn.remove(); // Eliminar el botón 'Interested'
+
+  if (interestedBtn) {
+    interestedBtn.remove(); // Eliminar el botón 'Interested'
+  }else{
+    document.querySelector('.interested-notify-container').remove();
+  }
 
   const message = document.createElement('p');
   message.textContent = 'You are going to this event';
@@ -97,23 +103,30 @@ export function handleGoing(event) {
   const link = document.createElement('a');
   link.textContent = 'Changed your mind?';
   link.href = '#';
-  link.addEventListener('click', function(e) {
+  link.addEventListener('click', function (e) {
     e.preventDefault();
     card.removeChild(message);
     card.removeChild(link);
+    interestedBtn = document.createElement('button');
+    interestedBtn.textContent = 'Interested';
+    interestedBtn.classList.add('interestedBtn');
+    interestedBtn.id =   eventId;
+    interestedBtn.addEventListener('click', handleInterested);
     card.appendChild(interestedBtn);
     card.appendChild(goingBtn);
     const temp = goingList.filter(element => element.id !== eventId);
-    localStorageManager.setItem('Going',temp);
+    localStorageManager.setItem('Going', temp);
   });
   card.appendChild(link);
 
   // Aquí puedes agregar la lógica adicional para el evento 'Going'
   const exist = goingList.some(item => item.id === eventId);
   if (!exist) {
-  goingList.push(selectedEvent);
-  localStorageManager.setItem('Going', goingList);
+    goingList.push(selectedEvent);
+    localStorageManager.setItem('Going', goingList);
   }
+  const cleanedList = interestedList.filter(item => item.id !== eventId);
+  localStorageManager.setItem('Interested', cleanedList);
 
   // ...
 }
@@ -139,13 +152,13 @@ export function handleFavorite(event) {
   const link = document.createElement('a');
   link.textContent = 'Changed your mind?';
   link.href = '#';
-  link.addEventListener('click', function(e) {
+  link.addEventListener('click', function (e) {
     e.preventDefault();
     card.removeChild(message);
     card.removeChild(link);
     card.appendChild(favoriteBtn);
     const temp = favoriteList.filter(element => element.id !== eventId);
-    localStorageManager.setItem('Favorite',temp);
+    localStorageManager.setItem('Favorite', temp);
   });
   card.appendChild(link);
 
