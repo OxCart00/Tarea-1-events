@@ -34,6 +34,8 @@ export async function storageInfo(API_URL, id) {
 export function handleInterested(event) {
   const interestedBtn = event.target;
   const card = interestedBtn.parentNode;
+  card.classList.add('interested');
+
   const goingBtn = interestedBtn.previousSibling;
 
   const interestedList = localStorageManager.getItem('Interested')
@@ -63,9 +65,11 @@ export function handleInterested(event) {
   card.appendChild(link1);
 
   // Aquí puedes agregar la lógica adicional para el evento 'Interested'
-
+  const exist = interestedList.some(item => item.id === eventId);
+  if (!exist) {
   interestedList.push(selectedEvent);
   localStorageManager.setItem('Interested', interestedList);
+  }
   // ...
 }
 
@@ -74,6 +78,8 @@ export function handleGoing(event) {
   const goingBtn = event.target;
   const interestedBtn = goingBtn.previousSibling;
   const card = goingBtn.parentNode;
+  card.classList.add('going');
+
 
   const goingList = localStorageManager.getItem('Going')
   const key = document.querySelector('.active').id;
@@ -103,17 +109,20 @@ export function handleGoing(event) {
   card.appendChild(link);
 
   // Aquí puedes agregar la lógica adicional para el evento 'Going'
-
+  const exist = goingList.some(item => item.id === eventId);
+  if (!exist) {
   goingList.push(selectedEvent);
   localStorageManager.setItem('Going', goingList);
+  }
 
   // ...
 }
 
-// Función para el evento 'Going'
+// Función para el evento 'Favorite'
 export function handleFavorite(event) {
   const favoriteBtn = event.target;
   const card = favoriteBtn.parentNode;
+  card.classList.add('favorite');
 
   const favoriteList = localStorageManager.getItem('Favorite')
   const key = document.querySelector('.active').id;
@@ -141,9 +150,13 @@ export function handleFavorite(event) {
   card.appendChild(link);
 
   // Aquí puedes agregar la lógica adicional para el evento 'Going'
+  const exist = favoriteList.some(item => item.id === eventId);
+  if (!exist) {
+    favoriteList.push(selectedEvent);
+    localStorageManager.setItem('Favorite', favoriteList);
+  }
 
-  favoriteList.push(selectedEvent);
-  localStorageManager.setItem('Favorite', favoriteList);
+
 
   // ...
 }

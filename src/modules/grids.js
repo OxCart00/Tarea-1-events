@@ -1,9 +1,17 @@
 import { handleInterested, handleGoing, handleFavorite } from '../events.js';
 import { dateSet, locationSet, priceSet } from './card__info__format.js';
+import LocalStorageManager from './singleton__pattern.js';
+
+const localStorageManager = new LocalStorageManager();
+
 
 
 export function buildGrid(data) {
   const grid = document.getElementById('grid');
+  const goingList = localStorageManager.getItem('Going');
+  const interestedList = localStorageManager.getItem('Interested');
+  const favoriteList = localStorageManager.getItem('Favorite');
+  console.log(interestedList);
   grid.textContent = ``;
   let temp = new DocumentFragment;
 
@@ -53,8 +61,20 @@ export function buildGrid(data) {
     card.appendChild(going);
     card.appendChild(favorite);
     temp.appendChild(card);
+
+    if (favoriteList.some(event => event.id === item.id)) {
+      console.log('repetido');
+      handleFavorite({target: favorite});
+    }
+    if (goingList.some(event => event.id === item.id)) {
+      handleGoing({target: going});
+    }
+      if (interestedList.some(event => event.id === item.id)){
+      handleInterested({target: interested});
+    }
   });
   grid.appendChild(temp);
+
 }
 
 export function buildViewGrid(data) {
