@@ -1,6 +1,15 @@
 import { createTabs, changeColor } from '../src/modules/tabs.js';
 import { storageInfo } from '../src/events.js';
-import { categories } from '../src/settings.js';
+import { categories, yourEvents } from '../src/settings.js';
+import LocalStorageManager from './modules/singleton__pattern.js';
+
+const localStorageManager = new LocalStorageManager();
+console.log(localStorageManager.getItem('Going'));
+if (localStorageManager.getItem('Going') === null) {
+  yourEvents.forEach(category => {
+  localStorageManager.setItem(category.id,[])
+});
+}
 
 
 createTabs(categories);
