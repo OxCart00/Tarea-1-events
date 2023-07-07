@@ -1,4 +1,5 @@
 import { handleInterested, handleGoing, handleFavorite } from '../events.js';
+import calendarModule from './calendar.js';
 import { dateSet, locationSet, priceSet } from './card__info__format.js';
 import LocalStorageManager from './singleton__pattern.js';
 
@@ -14,6 +15,10 @@ export function buildGrid(data) {
   console.log(interestedList);
   grid.textContent = ``;
   let temp = new DocumentFragment;
+
+  if (!data || !Array.isArray(data)) {
+    return; // Verificar si el objeto data es nulo, indefinido o no es un array
+  }
 
   data.forEach(item => {
     const card = document.createElement('div');
@@ -65,18 +70,17 @@ export function buildGrid(data) {
     card.appendChild(favorite);
     temp.appendChild(card);
 
-    if (favoriteList.some(event => event.id === item.id)) {
+    if (favoriteList && favoriteList.some(event => event.id === item.id)) {
       handleFavorite({target: favorite});
     }
-    if (goingList.some(event => event.id === item.id)) {
+    if (goingList && goingList.some(event => event.id === item.id)) {
       handleGoing({target: going});
     }
-      if (interestedList.some(event => event.id === item.id)){
+    if (interestedList && interestedList.some(event => event.id === item.id)){
       handleInterested({target: interested});
     }
   });
   grid.appendChild(temp);
-
 }
 
 export function buildViewGrid(data) {

@@ -80,7 +80,6 @@ export function handleGoing(event) {
   let interestedBtn = card.querySelector('.interestedBtn');
   card.classList.add('going');
 
-
   const goingList = localStorageManager.getItem('Going');
   const interestedList = localStorageManager.getItem('Interested');
   const key = document.querySelector('.active').id;

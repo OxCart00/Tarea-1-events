@@ -10,7 +10,8 @@ export let categories = [
 export let yourEvents = [
   { name: 'Favorite', id: 'Favorite' },
   { name: 'Interested', id: 'Interested' },
-  { name: 'Going', id: 'Going' }
+  { name: 'Going', id: 'Going' },
+  { name: 'Calendar', id: 'Calendar'}
 ];
 
 
