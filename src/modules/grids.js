@@ -1,18 +1,14 @@
 import { handleInterested, handleGoing, handleFavorite } from '../events.js';
-import calendarModule from './calendar.js';
 import { dateSet, locationSet, priceSet } from './card__info__format.js';
 import LocalStorageManager from './singleton__pattern.js';
 
 const localStorageManager = new LocalStorageManager();
-
-
 
 export function buildGrid(data) {
   const grid = document.getElementById('grid');
   const goingList = localStorageManager.getItem('Going');
   const interestedList = localStorageManager.getItem('Interested');
   const favoriteList = localStorageManager.getItem('Favorite');
-  console.log(interestedList);
   grid.textContent = ``;
   let temp = new DocumentFragment;
 
