@@ -81,12 +81,15 @@
 // })();
 
 // export default calendarModule;
-
+import  {buildView}  from "./grids.js";
 import LocalStorageManager from './singleton__pattern.js';
 
 const localStorageManager = new LocalStorageManager();
 let calendarEvents = [];
 
+const goingEvents = localStorageManager.getItem('Going');
+const interestedEvents = localStorageManager.getItem('Interested');
+const favoriteEvents = localStorageManager.getItem('Favorite');
 
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
@@ -98,7 +101,14 @@ export function initializeCalendar() {
   gridContainer.style.display = "none";
   calendarEvents = [];
   calendarEvents.push(...localStorageManager.getItem('Favorite'), ...localStorageManager.getItem('Going'), ...localStorageManager.getItem('Interested'));
-  console.log(calendarEvents);
+  const cleanCalendarEvents = calendarEvents.filter((objeto, indice, self) =>
+    indice === self.findIndex((t) => (
+      t.id === objeto.id
+    ))
+  );
+
+
+
   const calendarContainer = document.querySelector(".calendar");
   calendarContainer.style.display = "block";
 
@@ -130,17 +140,30 @@ export function initializeCalendar() {
     }
 
     // Buscar eventos para este día
-    const eventsForDay = findEventsForDay(i, calendarEvents);
+    const eventsForDay = findEventsForDay(i, cleanCalendarEvents);
     if (eventsForDay.length > 0) {
       eventsForDay.forEach(event => {
-        const eventElement = document.createElement("p");
+        const eventElement = document.createElement("button");
         eventElement.classList.add("event");
         eventElement.textContent = event.title;
+
+        if (goingEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add("going__event");
+        } else if (interestedEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add("interested__event");
+        } else if (favoriteEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add("favorite__event");
+        }
         dayElement.appendChild(eventElement);
+
+        eventElement.onclick = function(){
+          buildView(event);
+        };
       });
     }
 
     daysContainer.appendChild(dayElement);
+    
   }
 }
 
@@ -168,13 +191,18 @@ function updateCalendar() {
   // Vaciar el contenido del contenedor de días
   const daysContainer = document.getElementById("calendar-days");
   daysContainer.innerHTML = "";
-  
+
   calendarEvents = [];
   calendarEvents.push(...localStorageManager.getItem('Favorite'), ...localStorageManager.getItem('Going'), ...localStorageManager.getItem('Interested'));
+  const cleanCalendarEvents = calendarEvents.filter((objeto, indice, self) =>
+    indice === self.findIndex((t) => (
+      t.id === objeto.id
+    ))
+  );
+
 
 
   // Obtener el primer día del mes y el número de días en el mes actual
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
   const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
 
   // Crear los elementos de día para cada día del mes
@@ -189,12 +217,22 @@ function updateCalendar() {
     }
 
     // Buscar eventos para este día
-    const eventsForDay = findEventsForDay(i, calendarEvents);
+    const eventsForDay = findEventsForDay(i, cleanCalendarEvents);
     if (eventsForDay.length > 0) {
       eventsForDay.forEach(event => {
-        const eventElement = document.createElement("p");
+        const eventElement = document.createElement("button");
         eventElement.classList.add("event");
         eventElement.textContent = event.title;
+        eventElement.onclick = function(){
+          buildView(event);
+        };
+        if (goingEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add("going__event");
+        } else if (interestedEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add("interested__event");
+        } else if (favoriteEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add("favorite__event");
+        }
         dayElement.appendChild(eventElement);
       });
     }

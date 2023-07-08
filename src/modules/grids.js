@@ -67,13 +67,13 @@ export function buildGrid(data) {
     temp.appendChild(card);
 
     if (favoriteList && favoriteList.some(event => event.id === item.id)) {
-      handleFavorite({target: favorite});
+      handleFavorite({ target: favorite });
     }
     if (goingList && goingList.some(event => event.id === item.id)) {
-      handleGoing({target: going});
+      handleGoing({ target: going });
     }
-    if (interestedList && interestedList.some(event => event.id === item.id)){
-      handleInterested({target: interested});
+    if (interestedList && interestedList.some(event => event.id === item.id)) {
+      handleInterested({ target: interested });
     }
   });
   grid.appendChild(temp);
@@ -117,5 +117,38 @@ export function buildViewGrid(data) {
     temp.appendChild(card);
   });
   grid.appendChild(temp);
+}
+
+export function buildView(data) {
+  const overlay = document.getElementById('overlay');
+  overlay.style.display = "block";
+
+  const card = document.querySelector('.hidden__card');
+  card.textContent = ``;
+
+  const img = document.createElement('img');
+  img.src = data.image;
+
+  const title = document.createElement('h3');
+  title.textContent = data.title;
+
+  const date = document.createElement('p');
+  date.textContent = dateSet(data.date);
+  date.className = 'date';
+
+  const location = document.createElement('p');
+  location.textContent = locationSet(data.location);
+  location.className = 'location';
+
+  const price = document.createElement('p');
+  price.textContent = priceSet(data.price);
+  price.className = 'price';
+
+  card.appendChild(img);
+  card.appendChild(title);
+  card.appendChild(date);
+  card.appendChild(location);
+  card.appendChild(price);
+  card.style.display = "inline-block";
 }
 

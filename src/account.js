@@ -4,6 +4,12 @@ import { buildViewGrid } from './modules/grids.js';
 import LocalStorageManager from './modules/singleton__pattern.js';
 import { initializeCalendar, showPreviousMonth, showNextMonth } from './modules/calendar.js';
 
+document.getElementById('overlay').onclick = function () {
+  const overlay = document.getElementById("overlay");
+  const card = document.querySelector(".hidden__card");
+  overlay.style.display = "none";
+  card.style.display = "none";
+}
 
 const localStorageManager = new LocalStorageManager();
 

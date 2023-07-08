@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <div id="overlay"></div>
   <header>
     <div class="backButton__container">
       <a class="back__link hover__effect" href="./index.html">
@@ -24,6 +25,7 @@
     </div>
   </header>
   <div id="grid"></div>
+  <div id="overlay" onclick="cerrarCard()"></div>
   <div class="calendar" style="display: none;">
     <h2 class="header">Calendario</h2>
     <button id="prev-month-btn">Anterior</button>
@@ -40,6 +42,7 @@
     </div>
     <div class="days" id="calendar-days"></div>
   </div>
+  <div class="hidden__card"></div>
 
   <script type="module" src="./src/account.js"></script>
 </body>
