@@ -151,32 +151,6 @@ p {
   font-weight: bold;
 }
 
-
-/* #calendar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  background-color: #f8f8f8;
-}
-
-#calendar-container .month {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.day {
-  display: flex; 
-  width: 190px;
-  height: 80px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  font-size: 16px;
-} */
 .calendar {
   font-family: Arial, sans-serif;
 }
@@ -222,7 +196,8 @@ p {
 .favorite__event {
   background-color: pink;
 }
-.current-day{
+
+.current-day {
   background-color: grey;
 }
 
@@ -239,6 +214,7 @@ p {
   display: none;
   background-color: #ffffff;
 }
+
 .hidden__card img {
   width: 100%;
 }
