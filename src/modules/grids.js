@@ -80,7 +80,10 @@ export function buildGrid(data) {
 }
 
 export function buildViewGrid(data) {
+  const calendarContainer = document.querySelector(".calendar");
+  calendarContainer.style.display = "none";
   const grid = document.getElementById('grid');
+  grid.style.display = "flex"
   grid.textContent = ``;
   let temp = new DocumentFragment;
 

@@ -133,7 +133,7 @@ p{
 }
 
 
-#calendar-container {
+/* #calendar-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,5 +157,32 @@ p{
   border: 1px solid #ccc;
   background-color: #fff;
   font-size: 16px;
+} */
+.calendar {
+  font-family: Arial, sans-serif;
 }
-
+.calendar .header {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.calendar .weekdays {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.calendar .weekdays .weekday {
+  flex: 1;
+  text-align: center;
+}
+.calendar .days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+.calendar .days .day {
+  min-height: 4.6875rem;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #ccc;
+}

@@ -2,13 +2,12 @@ import { createTabs, changeColor } from '../src/modules/tabs.js';
 import { yourEvents } from '../src/settings.js';
 import { buildViewGrid } from './modules/grids.js';
 import LocalStorageManager from './modules/singleton__pattern.js';
-import calendarModule from './modules/calendar.js';
+import { initializeCalendar, showPreviousMonth, showNextMonth } from './modules/calendar.js';
 
 
 const localStorageManager = new LocalStorageManager();
 
 createTabs(yourEvents);
-
 changeColor(0);
 buildViewGrid(localStorageManager.getItem('Favorite'));
 
@@ -18,72 +17,81 @@ const tabButtons = document.querySelectorAll('.tabButton');
 tabButtons.forEach(function (element, index) {
   element.addEventListener('click', async function (event) {
     changeColor(index);
-    buildViewGrid(localStorageManager.getItem(event.target.id));
+    if (element.id !== 'Calendar') {
+      buildViewGrid(localStorageManager.getItem(event.target.id));
+    }
   });
 });
 
+const calendarButton = document.getElementById('Calendar');
+calendarButton.addEventListener('click', initializeCalendar);
 
-document.addEventListener('DOMContentLoaded', () => {
-  const prevButton = document.querySelector('#prev-button');
-  const nextButton = document.querySelector('#next-button');
-  const tabButton = document.querySelector('.tabButton#Calendar');
-  const calendarContainer = document.getElementById('calendar-container');
-  const buttons = document.querySelectorAll('.tabButton');
+document.getElementById("prev-month-btn").addEventListener("click", showPreviousMonth);
+document.getElementById("next-month-btn").addEventListener("click", showNextMonth);
 
-  let currentYear = new Date().getFullYear();
-  let currentMonth = new Date().getMonth();
 
-  function updateCalendar() {
-    calendarModule.displayCalendar(currentYear, currentMonth);
-  }
 
-  function openCalendar() {
-    calendarContainer.style.display = 'block';
-    updateCalendar();
-  }
+// document.addEventListener('DOMContentLoaded', () => {
+//   const prevButton = document.querySelector('#prev-button');
+//   const nextButton = document.querySelector('#next-button');
+//   const tabButton = document.querySelector('.tabButton#Calendar');
+//   const calendarContainer = document.getElementById('calendar-container');
+//   const buttons = document.querySelectorAll('.tabButton');
 
-  function closeCalendar() {
-    calendarContainer.style.display = 'none';
-  }
+//   let currentYear = new Date().getFullYear();
+//   let currentMonth = new Date().getMonth();
 
-  function goToPreviousMonth() {
-    currentMonth--;
-    if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
-    }
-    updateCalendar();
-  }
+//   function updateCalendar() {
+//     calendarModule.displayCalendar(currentYear, currentMonth);
+//   }
 
-  function goToNextMonth() {
-    currentMonth++;
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
-    }
-    updateCalendar();
-  }
+//   function openCalendar() {
+//     calendarContainer.style.display = 'block';
+//     updateCalendar();
+//   }
 
-  if (prevButton) {
-    prevButton.addEventListener('click', goToPreviousMonth);
-  }
+//   function closeCalendar() {
+//     calendarContainer.style.display = 'none';
+//   }
 
-  if (nextButton) {
-    nextButton.addEventListener('click', goToNextMonth);
-  }
+//   function goToPreviousMonth() {
+//     currentMonth--;
+//     if (currentMonth < 0) {
+//       currentMonth = 11;
+//       currentYear--;
+//     }
+//     updateCalendar();
+//   }
 
-  if (tabButton) {
-    tabButton.addEventListener('click', openCalendar);
-  }
+//   function goToNextMonth() {
+//     currentMonth++;
+//     if (currentMonth > 11) {
+//       currentMonth = 0;
+//       currentYear++;
+//     }
+//     updateCalendar();
+//   }
 
-  buttons.forEach(button => {
-    if (button.id !== 'Calendar') {
-      button.addEventListener('click', closeCalendar);
-    }
-  });
+//   if (prevButton) {
+//     prevButton.addEventListener('click', goToPreviousMonth);
+//   }
 
-  updateCalendar();
-});
+//   if (nextButton) {
+//     nextButton.addEventListener('click', goToNextMonth);
+//   }
+
+//   if (tabButton) {
+//     tabButton.addEventListener('click', openCalendar);
+//   }
+
+//   buttons.forEach(button => {
+//     if (button.id !== 'Calendar') {
+//       button.addEventListener('click', closeCalendar);
+//     }
+//   });
+
+//   updateCalendar();
+// });
 
 
 
