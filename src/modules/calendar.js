@@ -1,83 +1,167 @@
-const calendarModule = (function() {
-  const months = [
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
-    "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-  ];
+import { buildView } from './grids.js'
+import LocalStorageManager from './singleton__pattern.js'
 
-  function getMonthName(monthIndex) {
-    return months[monthIndex];
-  }
+const localStorageManager = new LocalStorageManager()
+let calendarEvents = []
 
-  function getNumberOfDays(year, monthIndex) {
-    return new Date(year, monthIndex + 1, 0).getDate();
-  }
+const goingEvents = localStorageManager.getItem('Going')
+const interestedEvents = localStorageManager.getItem('Interested')
+const favoriteEvents = localStorageManager.getItem('Favorite')
 
-  let currentYear = new Date().getFullYear();
-  let currentMonth = new Date().getMonth();
+const currentDate = new Date()
+let currentYear = currentDate.getFullYear()
+let currentMonth = currentDate.getMonth()
+const monthTitle = document.querySelector('.current-month-title')
 
-  const calendarContainer = document.createElement('div');
-  calendarContainer.id = 'calendar-container';
+export function initializeCalendar () {
+  const gridContainer = document.querySelector('#grid')
+  gridContainer.style.display = 'none'
+  calendarEvents = []
+  calendarEvents.push(...localStorageManager.getItem('Favorite'), ...localStorageManager.getItem('Going'), ...localStorageManager.getItem('Interested'))
+  const cleanCalendarEvents = calendarEvents.filter((objeto, indice, self) =>
+    indice === self.findIndex((t) => (
+      t.id === objeto.id
+    ))
+  )
 
-  function displayCalendar(year, monthIndex) {
-    const monthName = getMonthName(monthIndex);
-    const numberOfDays = getNumberOfDays(year, monthIndex);
+  const calendarContainer = document.querySelector('.calendar')
+  calendarContainer.style.display = 'block'
 
-    calendarContainer.innerHTML = `Calendario ${monthName} ${year}:`;
+  const grid = document.getElementById('grid')
+  grid.textContent = ''
 
-    const prevButton = document.createElement('button');
-    prevButton.id = 'prev-button';
-    prevButton.textContent = 'Previous';
+  // Vaciar el contenido del contenedor de días
+  const daysContainer = document.getElementById('calendar-days')
+  daysContainer.innerHTML = ''
 
-    const nextButton = document.createElement('button');
-    nextButton.id = 'next-button';
-    nextButton.textContent = 'Next';
+  // Obtener el año y mes actual
+  currentYear = currentDate.getFullYear()
+  currentMonth = currentDate.getMonth()
 
-    calendarContainer.appendChild(prevButton);
-    calendarContainer.appendChild(nextButton);
+  monthTitle.textContent = getCurrentMonthName()
 
-    for (let day = 1; day <= numberOfDays; day++) {
-      const card = document.createElement('div');
+  // Obtener el primer día del mes y el número de días en el mes actual
+  const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0)
 
-      const dayElement = document.createElement('div');
-      dayElement.textContent = day;
-      dayElement.classList.add('day');
+  // Crear los elementos de día para cada día del mes
+  for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+    const dayElement = document.createElement('div')
+    dayElement.classList.add('day')
+    dayElement.textContent = i
 
-      card.appendChild(dayElement);
-      calendarContainer.appendChild(card);
+    // Resaltar el día actual
+    if (currentDate.getDate() === i && currentDate.getMonth() === currentMonth) {
+      dayElement.classList.add('current-day')
     }
 
-    prevButton.addEventListener('click', goToPreviousMonth);
-    nextButton.addEventListener('click', goToNextMonth);
-  }
+    // Buscar eventos para este día
+    const eventsForDay = findEventsForDay(i, cleanCalendarEvents)
+    if (eventsForDay.length > 0) {
+      eventsForDay.forEach(event => {
+        const eventElement = document.createElement('button')
+        eventElement.classList.add('event')
+        eventElement.textContent = event.title
 
-  function goToPreviousMonth() {
-    currentMonth--;
-    if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
+        if (goingEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add('going__event')
+        } else if (interestedEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add('interested__event')
+        } else if (favoriteEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add('favorite__event')
+        }
+        dayElement.appendChild(eventElement)
+
+        eventElement.onclick = function () {
+          buildView(event)
+        }
+      })
     }
-    displayCalendar(currentYear, currentMonth);
-  }
 
-  function goToNextMonth() {
-    currentMonth++;
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
+    daysContainer.appendChild(dayElement)
+  }
+}
+
+export function showPreviousMonth () {
+  currentMonth--
+  if (currentMonth < 0) {
+    currentMonth = 11
+    currentYear--
+  }
+  monthTitle.textContent = getCurrentMonthName()
+  updateCalendar()
+}
+
+export function showNextMonth () {
+  currentMonth++
+  if (currentMonth > 11) {
+    currentMonth = 0
+    currentYear++
+  }
+  monthTitle.textContent = getCurrentMonthName()
+  updateCalendar()
+}
+
+function updateCalendar () {
+  // Vaciar el contenido del contenedor de días
+  const daysContainer = document.getElementById('calendar-days')
+  daysContainer.innerHTML = ''
+
+  calendarEvents = []
+  calendarEvents.push(...localStorageManager.getItem('Favorite'), ...localStorageManager.getItem('Going'), ...localStorageManager.getItem('Interested'))
+  const cleanCalendarEvents = calendarEvents.filter((objeto, indice, self) =>
+    indice === self.findIndex((t) => (
+      t.id === objeto.id
+    ))
+  )
+
+  // Obtener el primer día del mes y el número de días en el mes actual
+  const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0)
+
+  // Crear los elementos de día para cada día del mes
+  for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+    const dayElement = document.createElement('div')
+    dayElement.classList.add('day')
+    dayElement.textContent = i
+
+    // Resaltar el día actual
+    if (currentDate.getDate() === i && currentDate.getMonth() === currentMonth) {
+      dayElement.classList.add('current-day')
     }
-    displayCalendar(currentYear, currentMonth);
+
+    // Buscar eventos para este día
+    const eventsForDay = findEventsForDay(i, cleanCalendarEvents)
+    if (eventsForDay.length > 0) {
+      eventsForDay.forEach(event => {
+        const eventElement = document.createElement('button')
+        eventElement.classList.add('event')
+        eventElement.textContent = event.title
+        eventElement.onclick = function () {
+          buildView(event)
+        }
+        if (goingEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add('going__event')
+        } else if (interestedEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add('interested__event')
+        } else if (favoriteEvents.some(objeto => objeto.id === event.id)) {
+          eventElement.classList.add('favorite__event')
+        }
+        dayElement.appendChild(eventElement)
+      })
+    }
+
+    daysContainer.appendChild(dayElement)
   }
+}
 
-  // Insertar el elemento calendarContainer en el documento
-  document.body.appendChild(calendarContainer);
+function getCurrentMonthName () {
+  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  return months[currentMonth]
+}
 
-  displayCalendar(currentYear, currentMonth);
-
-  return {
-    displayCalendar,
-    getMonthName,
-    getNumberOfDays
-  };
-})();
-
-export default calendarModule;
+function findEventsForDay (day, eventList) {
+  const eventsForDay = eventList.filter(event => {
+    const eventDate = new Date(event.date)
+    return eventDate.getDate() === day && eventDate.getMonth() === currentMonth
+  })
+  return eventsForDay
+}
