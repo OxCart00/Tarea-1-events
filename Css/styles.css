@@ -153,6 +153,14 @@ p {
 
 .calendar {
   font-family: Arial, sans-serif;
+  padding: 10px;
+}
+.calendar-btns{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  width: 50%;
+  padding: 10px;
 }
 
 .calendar .header {
@@ -176,6 +184,7 @@ p {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
+  padding: 10px;
 }
 
 .calendar .days .day {
