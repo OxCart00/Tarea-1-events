@@ -5,7 +5,13 @@ import LocalStorageManager from './singleton__pattern.js'
 const localStorageManager = new LocalStorageManager()
 
 export function buildGrid (data) {
+  const calendarContainer = document.querySelector('.calendar')
   const grid = document.getElementById('grid')
+  if (calendarContainer) {
+    calendarContainer.style.display = 'none'
+    grid.style.display = 'flex'
+    grid.textContent = ''
+  }
   const goingList = localStorageManager.getItem('Going')
   const interestedList = localStorageManager.getItem('Interested')
   const favoriteList = localStorageManager.getItem('Favorite')
@@ -75,46 +81,6 @@ export function buildGrid (data) {
     if (interestedList && interestedList.some(event => event.id === item.id)) {
       handleInterested({ target: interested })
     }
-  })
-  grid.appendChild(temp)
-}
-
-export function buildViewGrid (data) {
-  const calendarContainer = document.querySelector('.calendar')
-  calendarContainer.style.display = 'none'
-  const grid = document.getElementById('grid')
-  grid.style.display = 'flex'
-  grid.textContent = ''
-  const temp = new DocumentFragment()
-
-  data.forEach(item => {
-    const card = document.createElement('div')
-    card.className = 'card'
-
-    const img = document.createElement('img')
-    img.src = item.image
-
-    const title = document.createElement('h3')
-    title.textContent = item.title
-
-    const date = document.createElement('p')
-    date.textContent = dateSet(item.date)
-    date.className = 'date'
-
-    const location = document.createElement('p')
-    location.textContent = locationSet(item.location)
-    location.className = 'location'
-
-    const price = document.createElement('p')
-    price.textContent = priceSet(item.price)
-    price.className = 'price'
-
-    card.appendChild(img)
-    card.appendChild(title)
-    card.appendChild(date)
-    card.appendChild(location)
-    card.appendChild(price)
-    temp.appendChild(card)
   })
   grid.appendChild(temp)
 }

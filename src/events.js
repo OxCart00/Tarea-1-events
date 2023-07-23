@@ -58,6 +58,7 @@ export function handleInterested (event) {
     card.appendChild(interestedBtn)
     const temp = interestedList.filter(element => element.id !== eventId)
     localStorageManager.setItem('Interested', temp)
+    buildGrid(localStorageManager.getItem(key))
   })
   interestedContainer.appendChild(link1)
   card.appendChild(interestedContainer)
@@ -92,18 +93,17 @@ export function handleGoing (event) {
   } else {
     document.querySelector('.interested-notify-container').remove()
   }
-
+  const deleteGoing = document.createElement('div')
   const message = document.createElement('p')
   message.textContent = 'You are going to this event'
-  card.appendChild(message)
+  deleteGoing.appendChild(message)
 
   const link = document.createElement('a')
   link.textContent = 'Changed your mind?'
   link.href = '#'
   link.addEventListener('click', function (e) {
     e.preventDefault()
-    card.removeChild(message)
-    card.removeChild(link)
+    card.removeChild(deleteGoing)
     interestedBtn = document.createElement('button')
     interestedBtn.textContent = 'Interested'
     interestedBtn.classList.add('interestedBtn')
@@ -113,9 +113,10 @@ export function handleGoing (event) {
     card.appendChild(goingBtn)
     const temp = goingList.filter(element => element.id !== eventId)
     localStorageManager.setItem('Going', temp)
+    buildGrid(localStorageManager.getItem(key))
   })
-  card.appendChild(link)
-
+  deleteGoing.appendChild(link)
+  card.appendChild(deleteGoing)
   // Aquí puedes agregar la lógica adicional para el evento 'Going'
   const exist = goingList.some(item => item.id === eventId)
   if (!exist) {
@@ -124,7 +125,9 @@ export function handleGoing (event) {
   }
   const cleanedList = interestedList.filter(item => item.id !== eventId)
   localStorageManager.setItem('Interested', cleanedList)
-
+  if (key === 'Interested') {
+    buildGrid(localStorageManager.getItem(key))
+  }
   // ...
 }
 
@@ -141,24 +144,24 @@ export function handleFavorite (event) {
   const selectedEvent = events.find(element => element.id === eventId)
 
   favoriteBtn.remove()
-
+  const deleteFavorite = document.createElement('div')
   const message = document.createElement('p')
   message.textContent = 'You love this event'
-  card.appendChild(message)
+  deleteFavorite.appendChild(message)
 
   const link = document.createElement('a')
   link.textContent = 'Changed your mind?'
   link.href = '#'
   link.addEventListener('click', function (e) {
     e.preventDefault()
-    card.removeChild(message)
-    card.removeChild(link)
+    card.removeChild(deleteFavorite)
     card.appendChild(favoriteBtn)
     const temp = favoriteList.filter(element => element.id !== eventId)
     localStorageManager.setItem('Favorite', temp)
+    buildGrid(localStorageManager.getItem(key))
   })
-  card.appendChild(link)
-
+  deleteFavorite.appendChild(link)
+  card.appendChild(deleteFavorite)
   // Aquí puedes agregar la lógica adicional para el evento 'Going'
   const exist = favoriteList.some(item => item.id === eventId)
   if (!exist) {

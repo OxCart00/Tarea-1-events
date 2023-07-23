@@ -7,7 +7,9 @@ const localStorageManager = new LocalStorageManager()
 
 if (localStorageManager.getItem('Going') === null) {
   yourEvents.forEach(category => {
-    localStorageManager.setItem(category.id, [])
+    if (category.id !== 'Calendar') {
+      localStorageManager.setItem(category.id, [])
+    }
   })
 }
 

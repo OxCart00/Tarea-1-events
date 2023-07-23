@@ -12,6 +12,8 @@ const currentDate = new Date()
 let currentYear = currentDate.getFullYear()
 let currentMonth = currentDate.getMonth()
 const monthTitle = document.querySelector('.current-month-title')
+const yearTitle = document.querySelector('.current-year-title')
+const firstDayOfWeek = 0
 
 export function initializeCalendar () {
   const gridContainer = document.querySelector('#grid')
@@ -39,11 +41,24 @@ export function initializeCalendar () {
   currentMonth = currentDate.getMonth()
 
   monthTitle.textContent = getCurrentMonthName()
+  yearTitle.textContent = currentYear
 
-  // Obtener el primer día del mes y el número de días en el mes actual
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1)
   const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0)
 
+  // Obtener el número de días de la semana que deben mostrarse antes del primer día del mes
+  let daysToPrepend = firstDayOfMonth.getDay() - firstDayOfWeek
+  if (daysToPrepend < 0) {
+    daysToPrepend += 7
+  }
+
   // Crear los elementos de día para cada día del mes
+  for (let i = 0; i < daysToPrepend; i++) {
+    const dayElement = document.createElement('div')
+    dayElement.classList.add('day', 'empty-day') // Agrega una clase para dar estilo a los días vacíos
+    daysContainer.appendChild(dayElement)
+  }
+
   for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
     const dayElement = document.createElement('div')
     dayElement.classList.add('day')
@@ -88,6 +103,7 @@ export function showPreviousMonth () {
     currentYear--
   }
   monthTitle.textContent = getCurrentMonthName()
+  yearTitle.textContent = currentYear
   updateCalendar()
 }
 
@@ -98,6 +114,7 @@ export function showNextMonth () {
     currentYear++
   }
   monthTitle.textContent = getCurrentMonthName()
+  yearTitle.textContent = currentYear
   updateCalendar()
 }
 
@@ -116,8 +133,20 @@ function updateCalendar () {
 
   // Obtener el primer día del mes y el número de días en el mes actual
   const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0)
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1)
+
+  // Obtener el número de días de la semana que deben mostrarse antes del primer día del mes
+  let daysToPrepend = firstDayOfMonth.getDay() - firstDayOfWeek
+  if (daysToPrepend < 0) {
+    daysToPrepend += 7
+  }
 
   // Crear los elementos de día para cada día del mes
+  for (let i = 0; i < daysToPrepend; i++) {
+    const dayElement = document.createElement('div')
+    dayElement.classList.add('day', 'empty-day') // Agrega una clase para dar estilo a los días vacíos
+    daysContainer.appendChild(dayElement)
+  }
   for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
     const dayElement = document.createElement('div')
     dayElement.classList.add('day')
